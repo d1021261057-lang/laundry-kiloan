@@ -1,0 +1,536 @@
+
+import streamlit as st
+import re
+
+# =====================================================
+# LAVE LAUNDRY STUDIO
+# Aplikasi Perhitungan Biaya Laundry Kiloan
+# =====================================================
+
+st.set_page_config(
+    page_title="LAVE | Laundry Studio",
+    page_icon="🫧",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# =====================================================
+# CSS - MINIMALIST NAVY DESIGN
+# =====================================================
+
+st.markdown("""
+<style>
+    :root {
+        --navy: #142A46;
+        --navy-light: #203D60;
+        --gold: #C7A96B;
+        --background: #F5F6F8;
+        --muted: #758195;
+    }
+
+    .stApp {
+        background: var(--background);
+    }
+
+    [data-testid="stHeader"] {
+        background: transparent;
+    }
+
+    [data-testid="stSidebar"] {
+        background: var(--navy);
+        border-right: 1px solid #263F5C;
+    }
+
+    [data-testid="stSidebar"] > div {
+        background: var(--navy);
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #FFFFFF;
+    }
+
+    .brand {
+        padding: 22px 8px 16px;
+        text-align: center;
+    }
+
+    .brand-symbol {
+        font-size: 48px;
+        color: var(--gold);
+        font-weight: 300;
+        letter-spacing: 4px;
+    }
+
+    .brand-name {
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        color: white;
+        margin-top: 5px;
+    }
+
+    .brand-subtitle {
+        font-size: 10px;
+        color: #C5D0DE;
+        letter-spacing: 3px;
+        margin-top: 5px;
+    }
+
+    .brand-line {
+        width: 45px;
+        height: 2px;
+        background: var(--gold);
+        margin: 17px auto;
+    }
+
+    .brand-description {
+        color: #C5D0DE;
+        font-size: 12px;
+        line-height: 1.8;
+    }
+
+    .main-heading {
+        color: var(--navy);
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+
+    .main-subheading {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .section-heading {
+        color: var(--navy);
+        font-size: 19px;
+        font-weight: 750;
+        margin: 12px 0 15px;
+    }
+
+    .info-card {
+        background: white;
+        border: 1px solid #E4E8EE;
+        border-radius: 13px;
+        padding: 17px;
+        min-height: 103px;
+        margin-bottom: 10px;
+    }
+
+    .info-label {
+        color: #7B8797;
+        font-size: 12px;
+        margin-bottom: 9px;
+    }
+
+    .info-value {
+        color: var(--navy);
+        font-size: 21px;
+        font-weight: 800;
+    }
+
+    .total-card {
+        background: var(--navy);
+        border-radius: 15px;
+        padding: 22px;
+        margin-top: 9px;
+    }
+
+    .total-label {
+        color: #D8E0EA;
+        font-size: 12px;
+        letter-spacing: 2px;
+        font-weight: 600;
+    }
+
+    .total-value {
+        color: #E7CC91;
+        font-size: 30px;
+        font-weight: 850;
+        margin-top: 7px;
+    }
+
+    .total-note {
+        color: #C5D0DE;
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .footer {
+        color: #8993A1;
+        text-align: center;
+        font-size: 11px;
+        padding: 25px 5px 10px;
+        line-height: 1.8;
+    }
+
+    div.stButton > button {
+        border-radius: 9px;
+        min-height: 43px;
+        font-weight: 650;
+    }
+
+    div.stButton > button[kind="primary"] {
+        background: var(--navy);
+        border-color: var(--navy);
+        color: white;
+    }
+
+    div.stButton > button[kind="primary"]:hover {
+        background: var(--navy-light);
+        border-color: var(--navy-light);
+        color: white;
+    }
+
+    div[data-testid="stTextInput"] input {
+        border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+        .main-heading {
+            font-size: 24px;
+        }
+
+        .info-value {
+            font-size: 18px;
+        }
+
+        .total-value {
+            font-size: 25px;
+        }
+
+        .brand-name {
+            font-size: 22px;
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
+# =====================================================
+# FUNGSI BANTU
+# =====================================================
+
+def format_rupiah(nilai):
+    """Mengubah angka menjadi format Rupiah."""
+    return "Rp " + f"{nilai:,.0f}".replace(",", ".")
+
+
+def reset_data():
+    """Mengosongkan input dan hasil perhitungan."""
+    st.session_state["nim"] = ""
+    st.session_state["berat"] = ""
+    st.session_state["hasil"] = None
+
+
+def hitung_laundry(nim, berat):
+    """
+    Menghitung biaya laundry berdasarkan NIM
+    dan berat cucian.
+    """
+
+    if not re.fullmatch(r"[0-9]{10}", nim):
+        raise ValueError(
+            "NIM tidak valid! Masukkan tepat 10 digit angka."
+        )
+
+    if not re.fullmatch(r"[0-9]+", berat):
+        raise ValueError(
+            "Berat cucian harus berupa bilangan bulat positif."
+        )
+
+    berat_kg = int(berat)
+
+    if berat_kg <= 0:
+        raise ValueError(
+            "Berat cucian harus lebih dari 0 kg."
+        )
+
+    digit_terakhir = int(nim[-1])
+
+    jumlah_digit_genap = sum(
+        1 for digit in nim
+        if int(digit) % 2 == 0
+    )
+
+    tarif = 5000 + (digit_terakhir * 500)
+
+    persen_diskon = jumlah_digit_genap
+
+    biaya_normal = berat_kg * tarif
+
+    potongan = biaya_normal * persen_diskon / 100
+
+    total_bayar = biaya_normal - potongan
+
+    return {
+        "nim": nim,
+        "berat": berat_kg,
+        "tarif": tarif,
+        "digit_genap": jumlah_digit_genap,
+        "diskon": persen_diskon,
+        "normal": biaya_normal,
+        "potongan": potongan,
+        "total": total_bayar
+    }
+
+
+# =====================================================
+# SESSION STATE
+# =====================================================
+
+if "nim" not in st.session_state:
+    st.session_state["nim"] = ""
+
+if "berat" not in st.session_state:
+    st.session_state["berat"] = ""
+
+if "hasil" not in st.session_state:
+    st.session_state["hasil"] = None
+
+if "error" not in st.session_state:
+    st.session_state["error"] = None
+
+
+# =====================================================
+# SIDEBAR / IDENTITAS APLIKASI
+# =====================================================
+
+with st.sidebar:
+
+    st.markdown("""
+    <div class="brand">
+        <div class="brand-symbol">〰</div>
+        <div class="brand-name">LAVÉ</div>
+        <div class="brand-subtitle">LAUNDRY STUDIO</div>
+        <div class="brand-line"></div>
+        <div class="brand-description">
+            Smart Laundry Calculator<br>
+            Aplikasi Perhitungan<br>
+            Biaya Laundry Kiloan
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    st.markdown("### Tentang Aplikasi")
+    st.markdown("**Kategori:** Laundry Calculator")
+    st.markdown("**Bahasa:** Python")
+    st.markdown("**Framework:** Streamlit")
+    st.markdown("**Versi:** 1.0")
+
+    st.divider()
+
+    st.markdown("### Panduan")
+    st.markdown("""
+    1. Masukkan NIM 10 digit.
+    2. Masukkan berat cucian.
+    3. Tekan tombol Hitung.
+    4. Lihat rincian pembayaran.
+    """)
+
+    st.divider()
+
+    st.caption("LAVÉ LAUNDRY STUDIO")
+    st.caption("Clean. Simple. Reliable.")
+
+
+# =====================================================
+# HEADER UTAMA
+# =====================================================
+
+st.markdown("""
+<div class="main-heading">
+    Laundry Cost Calculator
+</div>
+<div class="main-subheading">
+    Perhitungan biaya laundry kiloan yang praktis,
+    cepat, dan akurat.
+</div>
+""", unsafe_allow_html=True)
+
+
+# =====================================================
+# FORM INPUT
+# =====================================================
+
+st.markdown(
+    '<div class="section-heading">01 / DATA PELANGGAN</div>',
+    unsafe_allow_html=True
+)
+
+with st.container(border=True):
+
+    nim = st.text_input(
+        "Nomor Induk Mahasiswa (NIM)",
+        placeholder="Masukkan 10 digit angka",
+        max_chars=20,
+        key="nim"
+    )
+
+    berat = st.text_input(
+        "Berat Cucian (kg)",
+        placeholder="Masukkan berat dalam kilogram",
+        max_chars=20,
+        key="berat"
+    )
+
+    col_hitung, col_reset = st.columns(2)
+
+    with col_hitung:
+        tombol_hitung = st.button(
+            "Hitung Biaya",
+            type="primary",
+            use_container_width=True
+        )
+
+    with col_reset:
+        st.button(
+            "Reset",
+            on_click=reset_data,
+            use_container_width=True
+        )
+
+
+# =====================================================
+# PROSES HITUNG
+# =====================================================
+
+if tombol_hitung:
+
+    st.session_state["hasil"] = None
+    st.session_state["error"] = None
+
+    try:
+        st.session_state["hasil"] = hitung_laundry(
+            nim.strip(),
+            berat.strip()
+        )
+
+    except ValueError as error:
+        st.session_state["error"] = str(error)
+
+
+# =====================================================
+# PESAN VALIDASI
+# =====================================================
+
+if st.session_state["error"]:
+    st.error(st.session_state["error"])
+
+
+# =====================================================
+# HASIL PERHITUNGAN
+# =====================================================
+
+hasil = st.session_state["hasil"]
+
+if hasil is not None:
+
+    st.markdown("---")
+
+    st.markdown("""
+    <div class="section-heading">
+        02 / RINCIAN PERHITUNGAN
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown(f"""
+        <div class="info-card">
+            <div class="info-label">Tarif per Kilogram</div>
+            <div class="info-value">
+                {format_rupiah(hasil['tarif'])}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="info-card">
+            <div class="info-label">Persentase Diskon</div>
+            <div class="info-value">
+                {hasil['diskon']}%
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    col3, col4 = st.columns(2)
+
+    with col3:
+        st.markdown(f"""
+        <div class="info-card">
+            <div class="info-label">Biaya Normal</div>
+            <div class="info-value">
+                {format_rupiah(hasil['normal'])}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="info-card">
+            <div class="info-label">Potongan Harga</div>
+            <div class="info-value">
+                {format_rupiah(hasil['potongan'])}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="total-card">
+        <div class="total-label">
+            TOTAL PEMBAYARAN
+        </div>
+        <div class="total-value">
+            {format_rupiah(hasil['total'])}
+        </div>
+        <div class="total-note">
+            Berat {hasil['berat']} kg
+            &nbsp; | &nbsp;
+            Diskon {hasil['diskon']}%
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    with st.expander("Lihat Detail Data Pelanggan"):
+
+        st.write("**NIM:**", hasil["nim"])
+        st.write("**Berat Cucian:**", hasil["berat"], "kg")
+        st.write(
+            "**Jumlah Digit Genap:**",
+            hasil["digit_genap"]
+        )
+        st.write(
+            "**Tarif per kg:**",
+            format_rupiah(hasil["tarif"])
+        )
+        st.write(
+            "**Biaya Normal:**",
+            format_rupiah(hasil["normal"])
+        )
+        st.write(
+            "**Potongan:**",
+            format_rupiah(hasil["potongan"])
+        )
+        st.write(
+            "**Total Bayar:**",
+            format_rupiah(hasil["total"])
+        )
+
+
+# =====================================================
+# FOOTER
+# =====================================================
+
+st.markdown("""
+<div class="footer">
+    <b>LAVÉ LAUNDRY STUDIO</b><br>
+    Smart Laundry Calculator<br>
+    © 2026 · All Rights Reserved
+</div>
+""", unsafe_allow_html=True)
