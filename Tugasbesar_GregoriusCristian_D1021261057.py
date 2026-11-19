@@ -36,8 +36,6 @@ st.markdown("""
         background: transparent;
     }
 
-    /* SIDEBAR */
-
     [data-testid="stSidebar"] {
         background: var(--navy);
         border-right: 1px solid #263F5C;
@@ -93,44 +91,19 @@ st.markdown("""
         line-height: 1.8;
     }
 
-    /* MAIN HEADER */
-
-    .hero {
-        text-align: center;
-        padding: 15px 5px 25px;
-    }
-
-    .washer-logo {
-        width: 82px;
-        height: 82px;
-        background: var(--navy);
-        border: 1px solid rgba(199,169,107,0.5);
-        border-radius: 23px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 17px;
-        box-shadow: 0 5px 16px rgba(20,42,70,0.10);
-    }
-
-    .washer-logo svg {
-        width: 54px;
-        height: 54px;
-    }
+    /* HEADER */
 
     .main-heading {
         color: var(--navy);
         font-size: 30px;
         font-weight: 800;
-        margin-bottom: 5px;
-        letter-spacing: -0.5px;
+        margin-bottom: 4px;
     }
 
     .main-subheading {
         color: var(--muted);
         font-size: 14px;
-        margin-bottom: 12px;
-        line-height: 1.7;
+        margin-bottom: 24px;
     }
 
     .section-heading {
@@ -140,28 +113,15 @@ st.markdown("""
         margin: 12px 0 15px;
     }
 
-    /* INPUT FORM */
+    /* INPUT DECORATION */
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
         border-radius: 15px;
-        border-color: #DCE2EA;
-    }
-
-    div[data-testid="stTextInput"] label {
-        color: var(--navy) !important;
-        font-weight: 600;
     }
 
     div[data-testid="stTextInput"] input {
         border-radius: 9px;
         min-height: 45px;
-        background: #FFFFFF !important;
-        color: var(--navy) !important;
-        border: 1px solid #DCE2EA;
-    }
-
-    div[data-testid="stTextInput"] input::placeholder {
-        color: #9AA4B2 !important;
     }
 
     /* RESULT CARDS */
@@ -173,19 +133,19 @@ st.markdown("""
         padding: 19px;
         min-height: 145px;
         margin-bottom: 12px;
-        box-shadow: 0 3px 12px rgba(20,42,70,0.035);
+        box-shadow: 0 3px 12px rgba(20, 42, 70, 0.035);
     }
 
     .card-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 15px;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 25px;
+        font-size: 23px;
         font-weight: 700;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
     }
 
     .icon-blue {
@@ -210,7 +170,7 @@ st.markdown("""
 
     .info-label {
         color: #7B8797;
-        font-size: 13px;
+        font-size: 12px;
         margin-bottom: 9px;
     }
 
@@ -227,7 +187,7 @@ st.markdown("""
         border-radius: 16px;
         padding: 25px;
         margin-top: 10px;
-        box-shadow: 0 6px 18px rgba(20,42,70,0.12);
+        box-shadow: 0 6px 18px rgba(20, 42, 70, 0.12);
         position: relative;
         overflow: hidden;
     }
@@ -248,7 +208,7 @@ st.markdown("""
 
     .total-note {
         color: #C5D0DE;
-        font-size: 13px;
+        font-size: 12px;
         margin-top: 9px;
     }
 
@@ -257,7 +217,7 @@ st.markdown("""
         right: 20px;
         top: 20px;
         font-size: 48px;
-        color: rgba(231,204,145,0.18);
+        color: rgba(231, 204, 145, 0.18);
     }
 
     /* BUTTONS */
@@ -281,46 +241,13 @@ st.markdown("""
         color: white;
     }
 
-    div.stButton > button[kind="secondary"] {
-        background: #FFFFFF;
-        border: 1px solid #DCE2EA;
-        color: var(--navy);
-    }
-
-    div.stButton > button[kind="secondary"]:hover {
-        background: #EAF0F6;
-        border-color: var(--navy);
-        color: var(--navy);
-    }
-
-    /* EXPANDER / CUSTOMER DETAILS */
+    /* EXPANDER */
 
     [data-testid="stExpander"] {
         border: 1px solid #DCE2EA;
         border-radius: 11px;
         background: white;
         margin-top: 12px;
-    }
-
-    [data-testid="stExpander"] summary {
-        color: var(--navy) !important;
-        background: #FFFFFF;
-        font-weight: 650;
-    }
-
-    [data-testid="stExpander"] summary p {
-        color: var(--navy) !important;
-    }
-
-    [data-testid="stExpander"] [data-testid="stExpanderDetails"] {
-        background: #FFFFFF;
-        color: var(--navy) !important;
-        padding: 15px;
-    }
-
-    [data-testid="stExpander"] [data-testid="stExpanderDetails"] p {
-        color: #34445A !important;
-        font-size: 14px;
     }
 
     /* FOOTER */
@@ -333,35 +260,9 @@ st.markdown("""
         line-height: 1.8;
     }
 
-    .footer b {
-        color: #667387;
-        letter-spacing: 0.5px;
-    }
-
-    /* MOBILE */
-
     @media (max-width: 600px) {
-        .hero {
-            padding-top: 10px;
-        }
-
-        .washer-logo {
-            width: 72px;
-            height: 72px;
-            border-radius: 20px;
-        }
-
-        .washer-logo svg {
-            width: 48px;
-            height: 48px;
-        }
-
         .main-heading {
             font-size: 24px;
-        }
-
-        .main-subheading {
-            font-size: 13px;
         }
 
         .info-value {
@@ -510,66 +411,16 @@ with st.sidebar:
 
 
 # =====================================================
-# HEADER UTAMA + LOGO MESIN CUCI
+# HEADER UTAMA
 # =====================================================
 
 st.markdown("""
-<div class="hero">
-
-    <div class="washer-logo">
-        <svg viewBox="0 0 100 100"
-             xmlns="http://www.w3.org/2000/svg"
-             fill="none">
-
-            <!-- BODY MESIN CUCI -->
-            <rect x="13" y="10" width="74" height="80"
-                  rx="8"
-                  stroke="#C7A96B"
-                  stroke-width="3"/>
-
-            <!-- PANEL ATAS -->
-            <path d="M13 31 H87"
-                  stroke="#C7A96B"
-                  stroke-width="3"/>
-
-            <!-- TOMBOL KONTROL -->
-            <circle cx="68" cy="21" r="3.5"
-                    stroke="#C7A96B"
-                    stroke-width="2.5"/>
-
-            <circle cx="79" cy="21" r="3.5"
-                    stroke="#C7A96B"
-                    stroke-width="2.5"/>
-
-            <!-- LAYAR KECIL -->
-            <rect x="21" y="17" width="24" height="8"
-                  rx="3"
-                  stroke="#C7A96B"
-                  stroke-width="2.5"/>
-
-            <!-- PINTU MESIN CUCI -->
-            <circle cx="50" cy="59" r="22"
-                    stroke="#C7A96B"
-                    stroke-width="3"/>
-
-            <!-- GARIS AIR -->
-            <path d="M40 62 Q45 53 50 62 T60 62"
-                  stroke="#C7A96B"
-                  stroke-width="2.5"
-                  stroke-linecap="round"/>
-
-        </svg>
-    </div>
-
-    <div class="main-heading">
-        Laundry Cost Calculator
-    </div>
-
-    <div class="main-subheading">
-        Perhitungan biaya laundry kiloan yang praktis,
-        cepat, dan akurat.
-    </div>
-
+<div class="main-heading">
+    Laundry Cost Calculator
+</div>
+<div class="main-subheading">
+    Perhitungan biaya laundry kiloan yang praktis,
+    cepat, dan akurat.
 </div>
 """, unsafe_allow_html=True)
 
@@ -707,20 +558,15 @@ if hasil is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    # TOTAL PEMBAYARAN
-
     st.markdown(f"""
     <div class="total-card">
         <div class="total-decoration">✦</div>
-
         <div class="total-label">
             TOTAL PEMBAYARAN
         </div>
-
         <div class="total-value">
             {format_rupiah(hasil['total'])}
         </div>
-
         <div class="total-note">
             Berat {hasil['berat']} kg
             &nbsp; | &nbsp;
@@ -728,43 +574,6 @@ if hasil is not None:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-    # DETAIL DATA PELANGGAN
-
-    with st.expander("⌄ Lihat Detail Data Pelanggan"):
-
-        st.write("**NIM:**", hasil["nim"])
-
-        st.write(
-            "**Berat Cucian:**",
-            hasil["berat"],
-            "kg"
-        )
-
-        st.write(
-            "**Jumlah Digit Genap:**",
-            hasil["digit_genap"]
-        )
-
-        st.write(
-            "**Tarif per kg:**",
-            format_rupiah(hasil["tarif"])
-        )
-
-        st.write(
-            "**Biaya Normal:**",
-            format_rupiah(hasil["normal"])
-        )
-
-        st.write(
-            "**Potongan:**",
-            format_rupiah(hasil["potongan"])
-        )
-
-        st.write(
-            "**Total Bayar:**",
-            format_rupiah(hasil["total"])
-        )
 
 
 # =====================================================
