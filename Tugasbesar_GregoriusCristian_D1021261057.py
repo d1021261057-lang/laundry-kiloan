@@ -510,51 +510,70 @@ if "error" not in st.session_state:
 
 with st.sidebar:
 
-    st.markdown("""
-    <div class="brand">
+    st.html("""
+    <div style="
+        text-align:center;
+        padding:35px 8px 25px;
+        color:white;
+    ">
 
-        <div class="brand-logo">
-            <svg width="65" height="65"
-                 viewBox="0 0 100 100"
-                 fill="none"
-                 xmlns="http://www.w3.org/2000/svg">
+        <svg width="100" height="100"
+             viewBox="0 0 100 100"
+             xmlns="http://www.w3.org/2000/svg">
 
-                <rect x="19" y="15" width="62" height="70"
-                      rx="7" stroke="#C7A96B"
-                      stroke-width="3"/>
+            <rect x="17" y="12" width="66" height="76"
+                  rx="8" fill="none"
+                  stroke="#C7A96B" stroke-width="3"/>
 
-                <line x1="20" y1="34" x2="80" y2="34"
-                      stroke="#C7A96B" stroke-width="3"/>
+            <line x1="18" y1="32" x2="82" y2="32"
+                  stroke="#C7A96B" stroke-width="3"/>
 
-                <circle cx="34" cy="25" r="3"
-                        fill="#C7A96B"/>
+            <circle cx="34" cy="22" r="4"
+                    fill="#C7A96B"/>
 
-                <circle cx="45" cy="25" r="3"
-                        stroke="#C7A96B" stroke-width="2"/>
+            <circle cx="47" cy="22" r="4"
+                    fill="none" stroke="#C7A96B"
+                    stroke-width="2"/>
 
-                <circle cx="62" cy="59" r="18"
-                        stroke="#C7A96B" stroke-width="3"/>
+            <circle cx="50" cy="60" r="20"
+                    fill="none" stroke="#C7A96B"
+                    stroke-width="3"/>
 
-                <path d="M54 64 L64 54 M60 68 L70 58"
-                      stroke="#C7A96B"
-                      stroke-width="3"
-                      stroke-linecap="round"/>
+            <path d="M41 65 L57 49"
+                  stroke="#C7A96B"
+                  stroke-width="4"
+                  stroke-linecap="round"/>
 
-            </svg>
-        </div>
+        </svg>
 
-        <div class="brand-name">LAVÉ</div>
-        <div class="brand-subtitle">LAUNDRY STUDIO</div>
-        <div class="brand-line"></div>
+        <h1 style="
+            letter-spacing:5px;
+            font-size:27px;
+            margin:12px 0 0;
+            color:white;
+        ">LAVÉ</h1>
 
-        <div class="brand-description">
+        <p style="
+            letter-spacing:4px;
+            font-size:11px;
+            color:#C5D0DE;
+        ">LAUNDRY STUDIO</p>
+
+        <div style="
+            width:55px;
+            height:2px;
+            background:#C7A96B;
+            margin:20px auto;
+        "></div>
+
+        <p style="color:#C5D0DE;line-height:2;">
             Smart Laundry Calculator<br>
             Aplikasi Perhitungan<br>
             Biaya Laundry Kiloan
-        </div>
+        </p>
 
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     st.divider()
 
@@ -563,21 +582,6 @@ with st.sidebar:
     st.markdown("**Bahasa:** Python")
     st.markdown("**Framework:** Streamlit")
     st.markdown("**Versi:** 1.0")
-
-    st.divider()
-
-    st.markdown("### Panduan")
-    st.markdown("""
-    1. Masukkan NIM 10 digit.
-    2. Masukkan berat cucian.
-    3. Tekan tombol Hitung.
-    4. Lihat rincian pembayaran.
-    """)
-
-    st.divider()
-
-    st.caption("LAVÉ LAUNDRY STUDIO")
-    st.caption("Clean. Simple. Reliable.")
 
 
 # =====================================================
@@ -833,14 +837,16 @@ if hasil is not None:
 # FOOTER
 # =====================================================
 
-st.markdown("""
-<div class="footer">
-
+st.html("""
+<div style="
+    text-align:center;
+    padding:30px 10px;
+    color:#8993A1;
+    font-size:13px;
+    line-height:2;
+">
     <b>LAVÉ LAUNDRY STUDIO</b><br>
-
     Smart Laundry Calculator<br>
-
     © 2026 · All Rights Reserved
-
 </div>
-""", unsafe_allow_html=True)
+""")
