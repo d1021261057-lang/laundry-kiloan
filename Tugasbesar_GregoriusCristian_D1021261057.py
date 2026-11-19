@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # =====================================================
-# CSS - MINIMALIST NAVY DESIGN
+# CSS - LAVE SIGNATURE DESIGN
 # =====================================================
 
 st.markdown("""
@@ -48,6 +48,8 @@ st.markdown("""
     [data-testid="stSidebar"] * {
         color: #FFFFFF;
     }
+
+    /* BRAND */
 
     .brand {
         padding: 22px 8px 16px;
@@ -89,6 +91,8 @@ st.markdown("""
         line-height: 1.8;
     }
 
+    /* HEADER */
+
     .main-heading {
         color: var(--navy);
         font-size: 30px;
@@ -109,13 +113,59 @@ st.markdown("""
         margin: 12px 0 15px;
     }
 
+    /* INPUT DECORATION */
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        border-radius: 15px;
+    }
+
+    div[data-testid="stTextInput"] input {
+        border-radius: 9px;
+        min-height: 45px;
+    }
+
+    /* RESULT CARDS */
+
     .info-card {
         background: white;
         border: 1px solid #E4E8EE;
-        border-radius: 13px;
-        padding: 17px;
-        min-height: 103px;
-        margin-bottom: 10px;
+        border-radius: 15px;
+        padding: 19px;
+        min-height: 145px;
+        margin-bottom: 12px;
+        box-shadow: 0 3px 12px rgba(20, 42, 70, 0.035);
+    }
+
+    .card-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .icon-blue {
+        background: #E5EFFB;
+        color: #244D79;
+    }
+
+    .icon-purple {
+        background: #EEE8F7;
+        color: #70568F;
+    }
+
+    .icon-green {
+        background: #E3F1E9;
+        color: #367C59;
+    }
+
+    .icon-gold {
+        background: #F7EEDC;
+        color: #A17B3E;
     }
 
     .info-label {
@@ -130,11 +180,16 @@ st.markdown("""
         font-weight: 800;
     }
 
+    /* TOTAL PAYMENT */
+
     .total-card {
         background: var(--navy);
-        border-radius: 15px;
-        padding: 22px;
-        margin-top: 9px;
+        border-radius: 16px;
+        padding: 25px;
+        margin-top: 10px;
+        box-shadow: 0 6px 18px rgba(20, 42, 70, 0.12);
+        position: relative;
+        overflow: hidden;
     }
 
     .total-label {
@@ -148,27 +203,30 @@ st.markdown("""
         color: #E7CC91;
         font-size: 30px;
         font-weight: 850;
-        margin-top: 7px;
+        margin-top: 10px;
     }
 
     .total-note {
         color: #C5D0DE;
         font-size: 12px;
-        margin-top: 8px;
+        margin-top: 9px;
     }
 
-    .footer {
-        color: #8993A1;
-        text-align: center;
-        font-size: 11px;
-        padding: 25px 5px 10px;
-        line-height: 1.8;
+    .total-decoration {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 48px;
+        color: rgba(231, 204, 145, 0.18);
     }
+
+    /* BUTTONS */
 
     div.stButton > button {
-        border-radius: 9px;
-        min-height: 43px;
+        border-radius: 10px;
+        min-height: 45px;
         font-weight: 650;
+        transition: 0.2s ease;
     }
 
     div.stButton > button[kind="primary"] {
@@ -183,8 +241,23 @@ st.markdown("""
         color: white;
     }
 
-    div[data-testid="stTextInput"] input {
-        border-radius: 8px;
+    /* EXPANDER */
+
+    [data-testid="stExpander"] {
+        border: 1px solid #DCE2EA;
+        border-radius: 11px;
+        background: white;
+        margin-top: 12px;
+    }
+
+    /* FOOTER */
+
+    .footer {
+        color: #8993A1;
+        text-align: center;
+        font-size: 11px;
+        padding: 25px 5px 10px;
+        line-height: 1.8;
     }
 
     @media (max-width: 600px) {
@@ -203,6 +276,11 @@ st.markdown("""
         .brand-name {
             font-size: 22px;
         }
+
+        .info-card {
+            padding: 15px;
+            min-height: 135px;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -213,22 +291,17 @@ st.markdown("""
 # =====================================================
 
 def format_rupiah(nilai):
-    """Mengubah angka menjadi format Rupiah."""
     return "Rp " + f"{nilai:,.0f}".replace(",", ".")
 
 
 def reset_data():
-    """Mengosongkan input dan hasil perhitungan."""
     st.session_state["nim"] = ""
     st.session_state["berat"] = ""
     st.session_state["hasil"] = None
+    st.session_state["error"] = None
 
 
 def hitung_laundry(nim, berat):
-    """
-    Menghitung biaya laundry berdasarkan NIM
-    dan berat cucian.
-    """
 
     if not re.fullmatch(r"[0-9]{10}", nim):
         raise ValueError(
@@ -381,14 +454,14 @@ with st.container(border=True):
 
     with col_hitung:
         tombol_hitung = st.button(
-            "Hitung Biaya",
+            "🧺 Hitung Biaya",
             type="primary",
             use_container_width=True
         )
 
     with col_reset:
         st.button(
-            "Reset",
+            "↻ Reset",
             on_click=reset_data,
             use_container_width=True
         )
@@ -442,6 +515,7 @@ if hasil is not None:
     with col1:
         st.markdown(f"""
         <div class="info-card">
+            <div class="card-icon icon-blue">◇</div>
             <div class="info-label">Tarif per Kilogram</div>
             <div class="info-value">
                 {format_rupiah(hasil['tarif'])}
@@ -452,6 +526,7 @@ if hasil is not None:
     with col2:
         st.markdown(f"""
         <div class="info-card">
+            <div class="card-icon icon-purple">%</div>
             <div class="info-label">Persentase Diskon</div>
             <div class="info-value">
                 {hasil['diskon']}%
@@ -464,6 +539,7 @@ if hasil is not None:
     with col3:
         st.markdown(f"""
         <div class="info-card">
+            <div class="card-icon icon-green">▤</div>
             <div class="info-label">Biaya Normal</div>
             <div class="info-value">
                 {format_rupiah(hasil['normal'])}
@@ -474,6 +550,7 @@ if hasil is not None:
     with col4:
         st.markdown(f"""
         <div class="info-card">
+            <div class="card-icon icon-gold">−</div>
             <div class="info-label">Potongan Harga</div>
             <div class="info-value">
                 {format_rupiah(hasil['potongan'])}
@@ -483,6 +560,7 @@ if hasil is not None:
 
     st.markdown(f"""
     <div class="total-card">
+        <div class="total-decoration">✦</div>
         <div class="total-label">
             TOTAL PEMBAYARAN
         </div>
@@ -497,7 +575,7 @@ if hasil is not None:
     </div>
     """, unsafe_allow_html=True)
 
-    with st.expander("Lihat Detail Data Pelanggan"):
+    with st.expander("⌄ Lihat Detail Data Pelanggan"):
 
         st.write("**NIM:**", hasil["nim"])
         st.write("**Berat Cucian:**", hasil["berat"], "kg")
