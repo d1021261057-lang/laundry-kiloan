@@ -4,11 +4,11 @@ import re
 
 # =====================================================
 # LAVE LAUNDRY STUDIO
-# Smart Laundry Calculator
+# Aplikasi Perhitungan Biaya Laundry Kiloan
 # =====================================================
 
 st.set_page_config(
-    page_title="LAVÉ | Laundry Studio",
+    page_title="LAVE | Laundry Studio",
     page_icon="🫧",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -20,402 +20,367 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-:root {
-    color-scheme: light;
-    --navy: #142A46;
-    --navy-light: #203D60;
-    --gold: #C7A96B;
-    --background: #F4F6F9;
-    --white: #FFFFFF;
-    --text: #26364D;
-    --muted: #758195;
-}
-
-/* BACKGROUND DAN TEKS UTAMA */
-
-.stApp,
-[data-testid="stAppViewContainer"] {
-    background: var(--background) !important;
-    color: var(--text) !important;
-}
-
-[data-testid="stMain"] {
-    background: var(--background) !important;
-}
-
-[data-testid="stMain"] p,
-[data-testid="stMain"] label,
-[data-testid="stMain"] li {
-    color: var(--text);
-}
-
-[data-testid="stHeader"] {
-    background: transparent;
-}
-
-/* SIDEBAR */
-
-[data-testid="stSidebar"] {
-    background: var(--navy) !important;
-    border-right: 1px solid #263F5C;
-}
-
-[data-testid="stSidebar"] > div {
-    background: var(--navy) !important;
-}
-
-[data-testid="stSidebar"] * {
-    color: #FFFFFF;
-}
-
-/* BRAND SIDEBAR */
-
-.brand {
-    padding: 25px 8px 20px;
-    text-align: center;
-}
-
-.brand-logo {
-    width: 90px;
-    height: 90px;
-    margin: 0 auto 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(199,169,107,0.55);
-    border-radius: 22px;
-    background: rgba(255,255,255,0.04);
-}
-
-.brand-name {
-    font-size: 27px;
-    font-weight: 800;
-    letter-spacing: 5px;
-    color: white;
-}
-
-.brand-subtitle {
-    font-size: 10px;
-    color: #C5D0DE;
-    letter-spacing: 4px;
-    margin-top: 5px;
-}
-
-.brand-line {
-    width: 48px;
-    height: 2px;
-    background: var(--gold);
-    margin: 18px auto;
-}
-
-.brand-description {
-    color: #C5D0DE;
-    font-size: 12px;
-    line-height: 1.9;
-}
-
-/* MAIN HEADER */
-
-.hero {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 15px 0 8px;
-}
-
-.hero-logo {
-    min-width: 65px;
-    height: 65px;
-    background: var(--navy);
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.main-heading {
-    color: var(--navy) !important;
-    font-size: 29px;
-    font-weight: 800;
-    margin: 0;
-    line-height: 1.2;
-}
-
-.main-subheading {
-    color: var(--muted) !important;
-    font-size: 14px;
-    line-height: 1.7;
-    margin-bottom: 30px;
-}
-
-/* SECTION HEADING */
-
-.section-heading {
-    color: var(--navy) !important;
-    font-size: 19px;
-    font-weight: 800;
-    margin: 20px 0 15px;
-}
-
-/* INPUT FORM */
-
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    border: 1px solid #DCE2EA !important;
-    border-radius: 15px !important;
-    background: white !important;
-}
-
-[data-testid="stTextInput"] label {
-    color: var(--navy) !important;
-    font-weight: 650 !important;
-}
-
-[data-testid="stTextInput"] input {
-    background: #FFFFFF !important;
-    color: var(--text) !important;
-    border: 1px solid #CCD5E1 !important;
-    border-radius: 9px !important;
-    min-height: 48px;
-}
-
-[data-testid="stTextInput"] input::placeholder {
-    color: #929BA8 !important;
-}
-
-/* RESULT CARDS */
-
-.info-card {
-    background: #FFFFFF;
-    border: 1px solid #E1E6ED;
-    border-radius: 15px;
-    padding: 20px;
-    min-height: 150px;
-    margin-bottom: 12px;
-    box-shadow: 0 3px 12px rgba(20,42,70,0.04);
-}
-
-.card-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 23px;
-    font-weight: 700;
-    margin-bottom: 14px;
-}
-
-.icon-blue {
-    background: #E5EFFB;
-    color: #244D79;
-}
-
-.icon-purple {
-    background: #EEE8F7;
-    color: #70568F;
-}
-
-.icon-green {
-    background: #E3F1E9;
-    color: #367C59;
-}
-
-.icon-gold {
-    background: #F7EEDC;
-    color: #A17B3E;
-}
-
-.info-label {
-    color: #758195 !important;
-    font-size: 13px;
-    margin-bottom: 8px;
-}
-
-.info-value {
-    color: var(--navy) !important;
-    font-size: 22px;
-    font-weight: 800;
-}
-
-/* TOTAL PAYMENT */
-
-.total-card {
-    background: var(--navy);
-    border-radius: 17px;
-    padding: 27px;
-    margin-top: 10px;
-    margin-bottom: 18px;
-    box-shadow: 0 6px 18px rgba(20,42,70,0.12);
-    position: relative;
-    overflow: hidden;
-}
-
-.total-label {
-    color: #D8E0EA !important;
-    font-size: 12px;
-    letter-spacing: 2px;
-    font-weight: 700;
-}
-
-.total-value {
-    color: #E7CC91 !important;
-    font-size: 31px;
-    font-weight: 850;
-    margin-top: 12px;
-}
-
-.total-note {
-    color: #C5D0DE !important;
-    font-size: 13px;
-    margin-top: 12px;
-}
-
-.total-decoration {
-    position: absolute;
-    right: 22px;
-    top: 20px;
-    font-size: 48px;
-    color: rgba(231,204,145,0.22);
-}
-
-/* BUTTONS */
-
-div.stButton > button {
-    border-radius: 10px !important;
-    min-height: 48px;
-    font-weight: 650 !important;
-    transition: 0.2s ease;
-    background: #FFFFFF;
-    color: var(--navy);
-    border: 1px solid #DCE2EA;
-}
-
-div.stButton > button[kind="primary"] {
-    background: var(--navy) !important;
-    border-color: var(--navy) !important;
-    color: white !important;
-}
-
-div.stButton > button[kind="primary"]:hover {
-    background: var(--navy-light) !important;
-    border-color: var(--navy-light) !important;
-}
-
-/* EXPANDER - FIX KONTRAS TULISAN */
-
-[data-testid="stExpander"] {
-    background: #FFFFFF !important;
-    border: 1px solid #DCE2EA !important;
-    border-radius: 12px !important;
-    overflow: hidden;
-    margin-top: 15px;
-}
-
-[data-testid="stExpander"] summary {
-    background: #FFFFFF !important;
-    color: var(--navy) !important;
-}
-
-[data-testid="stExpander"] summary p,
-[data-testid="stExpander"] summary span {
-    color: var(--navy) !important;
-    font-weight: 650 !important;
-}
-
-[data-testid="stExpanderDetails"] {
-    background: #FFFFFF !important;
-}
-
-[data-testid="stExpanderDetails"] p,
-[data-testid="stExpanderDetails"] span,
-[data-testid="stExpanderDetails"] strong {
-    color: var(--text) !important;
-}
-
-/* DETAIL ROW */
-
-.detail-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 2px;
-    border-bottom: 1px solid #EDF0F4;
-    color: var(--text) !important;
-    font-size: 14px;
-}
-
-.detail-row strong {
-    color: var(--navy) !important;
-    text-align: right;
-}
-
-.detail-total {
-    border-bottom: none;
-    border-top: 2px solid var(--gold);
-    margin-top: 8px;
-    padding-top: 17px;
-    font-weight: 800;
-}
-
-/* ALERT */
-
-[data-testid="stAlert"] p {
-    color: inherit !important;
-}
-
-/* FOOTER */
-
-.footer {
-    color: #8993A1 !important;
-    text-align: center;
-    font-size: 11px;
-    padding: 30px 5px 15px;
-    line-height: 1.9;
-}
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-    .main-heading {
-        font-size: 22px;
+    :root {
+        --navy: #142A46;
+        --navy-light: #203D60;
+        --gold: #C7A96B;
+        --background: #F5F6F8;
+        --muted: #758195;
     }
 
-    .main-subheading {
-        font-size: 13px;
+    .stApp {
+        background: var(--background);
     }
 
-    .hero-logo {
-        min-width: 55px;
-        height: 55px;
+    [data-testid="stHeader"] {
+        background: transparent;
     }
 
-    .info-card {
-        padding: 15px;
-        min-height: 135px;
+    /* SIDEBAR */
+
+    [data-testid="stSidebar"] {
+        background: var(--navy);
+        border-right: 1px solid #263F5C;
     }
 
-    .info-value {
-        font-size: 18px;
+    [data-testid="stSidebar"] > div {
+        background: var(--navy);
     }
 
-    .total-value {
-        font-size: 26px;
+    [data-testid="stSidebar"] * {
+        color: #FFFFFF;
     }
 
-    .total-card {
-        padding: 22px;
+    /* BRAND */
+
+    .brand {
+        padding: 22px 8px 16px;
+        text-align: center;
+    }
+
+    .brand-symbol {
+        font-size: 48px;
+        color: var(--gold);
+        font-weight: 300;
+        letter-spacing: 4px;
     }
 
     .brand-name {
-        font-size: 23px;
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        color: white;
+        margin-top: 5px;
     }
 
-    .detail-row {
-        font-size: 13px;
+    .brand-subtitle {
+        font-size: 10px;
+        color: #C5D0DE;
+        letter-spacing: 3px;
+        margin-top: 5px;
     }
-}
+
+    .brand-line {
+        width: 45px;
+        height: 2px;
+        background: var(--gold);
+        margin: 17px auto;
+    }
+
+    .brand-description {
+        color: #C5D0DE;
+        font-size: 12px;
+        line-height: 1.8;
+    }
+
+    /* MAIN HEADER */
+
+    .hero {
+        text-align: center;
+        padding: 15px 5px 25px;
+    }
+
+    .washer-logo {
+        width: 82px;
+        height: 82px;
+        background: var(--navy);
+        border: 1px solid rgba(199,169,107,0.5);
+        border-radius: 23px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 17px;
+        box-shadow: 0 5px 16px rgba(20,42,70,0.10);
+    }
+
+    .washer-logo svg {
+        width: 54px;
+        height: 54px;
+    }
+
+    .main-heading {
+        color: var(--navy);
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 5px;
+        letter-spacing: -0.5px;
+    }
+
+    .main-subheading {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 12px;
+        line-height: 1.7;
+    }
+
+    .section-heading {
+        color: var(--navy);
+        font-size: 19px;
+        font-weight: 750;
+        margin: 12px 0 15px;
+    }
+
+    /* INPUT FORM */
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        border-radius: 15px;
+        border-color: #DCE2EA;
+    }
+
+    div[data-testid="stTextInput"] label {
+        color: var(--navy) !important;
+        font-weight: 600;
+    }
+
+    div[data-testid="stTextInput"] input {
+        border-radius: 9px;
+        min-height: 45px;
+        background: #FFFFFF !important;
+        color: var(--navy) !important;
+        border: 1px solid #DCE2EA;
+    }
+
+    div[data-testid="stTextInput"] input::placeholder {
+        color: #9AA4B2 !important;
+    }
+
+    /* RESULT CARDS */
+
+    .info-card {
+        background: white;
+        border: 1px solid #E4E8EE;
+        border-radius: 15px;
+        padding: 19px;
+        min-height: 145px;
+        margin-bottom: 12px;
+        box-shadow: 0 3px 12px rgba(20,42,70,0.035);
+    }
+
+    .card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .icon-blue {
+        background: #E5EFFB;
+        color: #244D79;
+    }
+
+    .icon-purple {
+        background: #EEE8F7;
+        color: #70568F;
+    }
+
+    .icon-green {
+        background: #E3F1E9;
+        color: #367C59;
+    }
+
+    .icon-gold {
+        background: #F7EEDC;
+        color: #A17B3E;
+    }
+
+    .info-label {
+        color: #7B8797;
+        font-size: 13px;
+        margin-bottom: 9px;
+    }
+
+    .info-value {
+        color: var(--navy);
+        font-size: 21px;
+        font-weight: 800;
+    }
+
+    /* TOTAL PAYMENT */
+
+    .total-card {
+        background: var(--navy);
+        border-radius: 16px;
+        padding: 25px;
+        margin-top: 10px;
+        box-shadow: 0 6px 18px rgba(20,42,70,0.12);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .total-label {
+        color: #D8E0EA;
+        font-size: 12px;
+        letter-spacing: 2px;
+        font-weight: 600;
+    }
+
+    .total-value {
+        color: #E7CC91;
+        font-size: 30px;
+        font-weight: 850;
+        margin-top: 10px;
+    }
+
+    .total-note {
+        color: #C5D0DE;
+        font-size: 13px;
+        margin-top: 9px;
+    }
+
+    .total-decoration {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 48px;
+        color: rgba(231,204,145,0.18);
+    }
+
+    /* BUTTONS */
+
+    div.stButton > button {
+        border-radius: 10px;
+        min-height: 45px;
+        font-weight: 650;
+        transition: 0.2s ease;
+    }
+
+    div.stButton > button[kind="primary"] {
+        background: var(--navy);
+        border-color: var(--navy);
+        color: white;
+    }
+
+    div.stButton > button[kind="primary"]:hover {
+        background: var(--navy-light);
+        border-color: var(--navy-light);
+        color: white;
+    }
+
+    div.stButton > button[kind="secondary"] {
+        background: #FFFFFF;
+        border: 1px solid #DCE2EA;
+        color: var(--navy);
+    }
+
+    div.stButton > button[kind="secondary"]:hover {
+        background: #EAF0F6;
+        border-color: var(--navy);
+        color: var(--navy);
+    }
+
+    /* EXPANDER / CUSTOMER DETAILS */
+
+    [data-testid="stExpander"] {
+        border: 1px solid #DCE2EA;
+        border-radius: 11px;
+        background: white;
+        margin-top: 12px;
+    }
+
+    [data-testid="stExpander"] summary {
+        color: var(--navy) !important;
+        background: #FFFFFF;
+        font-weight: 650;
+    }
+
+    [data-testid="stExpander"] summary p {
+        color: var(--navy) !important;
+    }
+
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+        background: #FFFFFF;
+        color: var(--navy) !important;
+        padding: 15px;
+    }
+
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] p {
+        color: #34445A !important;
+        font-size: 14px;
+    }
+
+    /* FOOTER */
+
+    .footer {
+        color: #8993A1;
+        text-align: center;
+        font-size: 11px;
+        padding: 25px 5px 10px;
+        line-height: 1.8;
+    }
+
+    .footer b {
+        color: #667387;
+        letter-spacing: 0.5px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+        .hero {
+            padding-top: 10px;
+        }
+
+        .washer-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+        }
+
+        .washer-logo svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        .main-heading {
+            font-size: 24px;
+        }
+
+        .main-subheading {
+            font-size: 13px;
+        }
+
+        .info-value {
+            font-size: 18px;
+        }
+
+        .total-value {
+            font-size: 25px;
+        }
+
+        .brand-name {
+            font-size: 22px;
+        }
+
+        .info-card {
+            padding: 15px;
+            min-height: 135px;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -434,10 +399,6 @@ def reset_data():
     st.session_state["hasil"] = None
     st.session_state["error"] = None
 
-
-# =====================================================
-# FUNGSI PERHITUNGAN
-# =====================================================
 
 def hitung_laundry(nim, berat):
 
@@ -505,75 +466,24 @@ if "error" not in st.session_state:
 
 
 # =====================================================
-# SIDEBAR
+# SIDEBAR / IDENTITAS APLIKASI
 # =====================================================
 
 with st.sidebar:
 
-    st.html("""
-    <div style="
-        text-align:center;
-        padding:35px 8px 25px;
-        color:white;
-    ">
-
-        <svg width="100" height="100"
-             viewBox="0 0 100 100"
-             xmlns="http://www.w3.org/2000/svg">
-
-            <rect x="17" y="12" width="66" height="76"
-                  rx="8" fill="none"
-                  stroke="#C7A96B" stroke-width="3"/>
-
-            <line x1="18" y1="32" x2="82" y2="32"
-                  stroke="#C7A96B" stroke-width="3"/>
-
-            <circle cx="34" cy="22" r="4"
-                    fill="#C7A96B"/>
-
-            <circle cx="47" cy="22" r="4"
-                    fill="none" stroke="#C7A96B"
-                    stroke-width="2"/>
-
-            <circle cx="50" cy="60" r="20"
-                    fill="none" stroke="#C7A96B"
-                    stroke-width="3"/>
-
-            <path d="M41 65 L57 49"
-                  stroke="#C7A96B"
-                  stroke-width="4"
-                  stroke-linecap="round"/>
-
-        </svg>
-
-        <h1 style="
-            letter-spacing:5px;
-            font-size:27px;
-            margin:12px 0 0;
-            color:white;
-        ">LAVÉ</h1>
-
-        <p style="
-            letter-spacing:4px;
-            font-size:11px;
-            color:#C5D0DE;
-        ">LAUNDRY STUDIO</p>
-
-        <div style="
-            width:55px;
-            height:2px;
-            background:#C7A96B;
-            margin:20px auto;
-        "></div>
-
-        <p style="color:#C5D0DE;line-height:2;">
+    st.markdown("""
+    <div class="brand">
+        <div class="brand-symbol">〰</div>
+        <div class="brand-name">LAVÉ</div>
+        <div class="brand-subtitle">LAUNDRY STUDIO</div>
+        <div class="brand-line"></div>
+        <div class="brand-description">
             Smart Laundry Calculator<br>
             Aplikasi Perhitungan<br>
             Biaya Laundry Kiloan
-        </p>
-
+        </div>
     </div>
-    """)
+    """, unsafe_allow_html=True)
 
     st.divider()
 
@@ -583,39 +493,69 @@ with st.sidebar:
     st.markdown("**Framework:** Streamlit")
     st.markdown("**Versi:** 1.0")
 
+    st.divider()
+
+    st.markdown("### Panduan")
+    st.markdown("""
+    1. Masukkan NIM 10 digit.
+    2. Masukkan berat cucian.
+    3. Tekan tombol Hitung.
+    4. Lihat rincian pembayaran.
+    """)
+
+    st.divider()
+
+    st.caption("LAVÉ LAUNDRY STUDIO")
+    st.caption("Clean. Simple. Reliable.")
+
 
 # =====================================================
-# HEADER UTAMA
+# HEADER UTAMA + LOGO MESIN CUCI
 # =====================================================
 
 st.markdown("""
 <div class="hero">
 
-    <div class="hero-logo">
-        <svg width="43" height="43"
-             viewBox="0 0 100 100"
-             fill="none"
-             xmlns="http://www.w3.org/2000/svg">
+    <div class="washer-logo">
+        <svg viewBox="0 0 100 100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none">
 
-            <rect x="17" y="12" width="66" height="76"
-                  rx="8" stroke="#C7A96B"
-                  stroke-width="4"/>
-
-            <line x1="18" y1="32" x2="82" y2="32"
-                  stroke="#C7A96B" stroke-width="4"/>
-
-            <circle cx="34" cy="22" r="4"
-                    fill="#C7A96B"/>
-
-            <circle cx="47" cy="22" r="4"
-                    stroke="#C7A96B" stroke-width="3"/>
-
-            <circle cx="50" cy="60" r="20"
-                    stroke="#C7A96B" stroke-width="4"/>
-
-            <path d="M41 66 L53 54 M49 70 L61 58"
+            <!-- BODY MESIN CUCI -->
+            <rect x="13" y="10" width="74" height="80"
+                  rx="8"
                   stroke="#C7A96B"
-                  stroke-width="4"
+                  stroke-width="3"/>
+
+            <!-- PANEL ATAS -->
+            <path d="M13 31 H87"
+                  stroke="#C7A96B"
+                  stroke-width="3"/>
+
+            <!-- TOMBOL KONTROL -->
+            <circle cx="68" cy="21" r="3.5"
+                    stroke="#C7A96B"
+                    stroke-width="2.5"/>
+
+            <circle cx="79" cy="21" r="3.5"
+                    stroke="#C7A96B"
+                    stroke-width="2.5"/>
+
+            <!-- LAYAR KECIL -->
+            <rect x="21" y="17" width="24" height="8"
+                  rx="3"
+                  stroke="#C7A96B"
+                  stroke-width="2.5"/>
+
+            <!-- PINTU MESIN CUCI -->
+            <circle cx="50" cy="59" r="22"
+                    stroke="#C7A96B"
+                    stroke-width="3"/>
+
+            <!-- GARIS AIR -->
+            <path d="M40 62 Q45 53 50 62 T60 62"
+                  stroke="#C7A96B"
+                  stroke-width="2.5"
                   stroke-linecap="round"/>
 
         </svg>
@@ -625,11 +565,11 @@ st.markdown("""
         Laundry Cost Calculator
     </div>
 
-</div>
+    <div class="main-subheading">
+        Perhitungan biaya laundry kiloan yang praktis,
+        cepat, dan akurat.
+    </div>
 
-<div class="main-subheading">
-    Perhitungan biaya laundry kiloan yang praktis,
-    cepat, dan akurat.
 </div>
 """, unsafe_allow_html=True)
 
@@ -663,7 +603,7 @@ with st.container(border=True):
 
     with col_hitung:
         tombol_hitung = st.button(
-            "Hitung Biaya",
+            "🧺 Hitung Biaya",
             type="primary",
             use_container_width=True
         )
@@ -771,7 +711,6 @@ if hasil is not None:
 
     st.markdown(f"""
     <div class="total-card">
-
         <div class="total-decoration">✦</div>
 
         <div class="total-label">
@@ -787,66 +726,55 @@ if hasil is not None:
             &nbsp; | &nbsp;
             Diskon {hasil['diskon']}%
         </div>
-
     </div>
     """, unsafe_allow_html=True)
 
-    # DETAIL PELANGGAN
+    # DETAIL DATA PELANGGAN
 
     with st.expander("⌄ Lihat Detail Data Pelanggan"):
 
-        st.markdown(f"""
-        <div class="detail-row">
-            <span>NIM</span>
-            <strong>{hasil['nim']}</strong>
-        </div>
+        st.write("**NIM:**", hasil["nim"])
 
-        <div class="detail-row">
-            <span>Berat Cucian</span>
-            <strong>{hasil['berat']} kg</strong>
-        </div>
+        st.write(
+            "**Berat Cucian:**",
+            hasil["berat"],
+            "kg"
+        )
 
-        <div class="detail-row">
-            <span>Jumlah Digit Genap</span>
-            <strong>{hasil['digit_genap']}</strong>
-        </div>
+        st.write(
+            "**Jumlah Digit Genap:**",
+            hasil["digit_genap"]
+        )
 
-        <div class="detail-row">
-            <span>Tarif per kg</span>
-            <strong>{format_rupiah(hasil['tarif'])}</strong>
-        </div>
+        st.write(
+            "**Tarif per kg:**",
+            format_rupiah(hasil["tarif"])
+        )
 
-        <div class="detail-row">
-            <span>Biaya Normal</span>
-            <strong>{format_rupiah(hasil['normal'])}</strong>
-        </div>
+        st.write(
+            "**Biaya Normal:**",
+            format_rupiah(hasil["normal"])
+        )
 
-        <div class="detail-row">
-            <span>Potongan Harga</span>
-            <strong>{format_rupiah(hasil['potongan'])}</strong>
-        </div>
+        st.write(
+            "**Potongan:**",
+            format_rupiah(hasil["potongan"])
+        )
 
-        <div class="detail-row detail-total">
-            <span>Total Bayar</span>
-            <strong>{format_rupiah(hasil['total'])}</strong>
-        </div>
-        """, unsafe_allow_html=True)
+        st.write(
+            "**Total Bayar:**",
+            format_rupiah(hasil["total"])
+        )
 
 
 # =====================================================
 # FOOTER
 # =====================================================
 
-st.html("""
-<div style="
-    text-align:center;
-    padding:30px 10px;
-    color:#8993A1;
-    font-size:13px;
-    line-height:2;
-">
+st.markdown("""
+<div class="footer">
     <b>LAVÉ LAUNDRY STUDIO</b><br>
     Smart Laundry Calculator<br>
     © 2026 · All Rights Reserved
 </div>
-""")
+""", unsafe_allow_html=True)
