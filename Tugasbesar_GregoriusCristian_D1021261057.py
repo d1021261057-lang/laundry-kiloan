@@ -4,7 +4,6 @@ import re
 
 # =====================================================
 # LAVE LAUNDRY STUDIO
-# Aplikasi Perhitungan Biaya Laundry Kiloan
 # =====================================================
 
 st.set_page_config(
@@ -15,279 +14,204 @@ st.set_page_config(
 )
 
 # =====================================================
-# CSS - LAVE SIGNATURE DESIGN
+# DESAIN / CSS
 # =====================================================
 
 st.markdown("""
 <style>
-    :root {
-        --navy: #142A46;
-        --navy-light: #203D60;
-        --gold: #C7A96B;
-        --background: #F5F6F8;
-        --muted: #758195;
-    }
+:root {
+    --navy: #142A46;
+    --navy2: #203D60;
+    --gold: #C7A96B;
+    --bg: #F4F6F9;
+    --muted: #778397;
+}
 
-    .stApp {
-        background: var(--background);
-    }
+.stApp {
+    background: var(--bg);
+}
 
-    [data-testid="stHeader"] {
-        background: transparent;
-    }
+[data-testid="stSidebar"] {
+    background: var(--navy);
+}
 
-    [data-testid="stSidebar"] {
-        background: var(--navy);
-        border-right: 1px solid #263F5C;
-    }
+[data-testid="stSidebar"] * {
+    color: white;
+}
 
-    [data-testid="stSidebar"] > div {
-        background: var(--navy);
-    }
+.brand {
+    text-align: center;
+    padding: 25px 8px;
+}
 
-    [data-testid="stSidebar"] * {
-        color: #FFFFFF;
-    }
+.brand-symbol {
+    font-size: 48px;
+    color: var(--gold);
+}
 
-    /* BRAND */
+.brand-name {
+    font-size: 29px;
+    font-weight: 800;
+    letter-spacing: 5px;
+}
 
-    .brand {
-        padding: 22px 8px 16px;
-        text-align: center;
-    }
+.brand-subtitle {
+    color: #C5D0DE;
+    letter-spacing: 4px;
+    font-size: 11px;
+}
 
-    .brand-symbol {
-        font-size: 48px;
-        color: var(--gold);
-        font-weight: 300;
-        letter-spacing: 4px;
-    }
+.brand-line {
+    width: 65px;
+    height: 3px;
+    background: var(--gold);
+    margin: 20px auto;
+}
 
-    .brand-name {
-        font-size: 25px;
-        font-weight: 800;
-        letter-spacing: 4px;
-        color: white;
-        margin-top: 5px;
-    }
+.main-heading {
+    color: var(--navy);
+    font-size: 31px;
+    font-weight: 850;
+}
 
-    .brand-subtitle {
-        font-size: 10px;
-        color: #C5D0DE;
-        letter-spacing: 3px;
-        margin-top: 5px;
-    }
+.main-subheading {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 28px;
+}
 
-    .brand-line {
-        width: 45px;
-        height: 2px;
-        background: var(--gold);
-        margin: 17px auto;
-    }
+.section-heading {
+    color: var(--navy);
+    font-size: 20px;
+    font-weight: 800;
+    margin: 16px 0;
+}
 
-    .brand-description {
-        color: #C5D0DE;
-        font-size: 12px;
-        line-height: 1.8;
-    }
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border-radius: 15px;
+}
 
-    /* HEADER */
+.info-card {
+    background: white;
+    border: 1px solid #E1E6ED;
+    border-radius: 15px;
+    padding: 17px;
+    min-height: 125px;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 12px rgba(20,42,70,.04);
+}
 
-    .main-heading {
-        color: var(--navy);
-        font-size: 30px;
-        font-weight: 800;
-        margin-bottom: 4px;
-    }
+.info-top {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 14px;
+}
 
-    .main-subheading {
-        color: var(--muted);
-        font-size: 14px;
-        margin-bottom: 24px;
-    }
+.info-icon {
+    width: 37px;
+    height: 37px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    background: #EDF3FA;
+}
 
-    .section-heading {
-        color: var(--navy);
-        font-size: 19px;
-        font-weight: 750;
-        margin: 12px 0 15px;
-    }
+.info-label {
+    color: #78869A;
+    font-size: 12px;
+    font-weight: 600;
+}
 
-    /* INPUT DECORATION */
+.info-value {
+    color: var(--navy);
+    font-size: 22px;
+    font-weight: 850;
+}
 
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-radius: 15px;
-    }
+.total-card {
+    background: var(--navy);
+    border-radius: 17px;
+    padding: 23px;
+    margin-top: 8px;
+    box-shadow: 0 6px 18px rgba(20,42,70,.12);
+}
 
-    div[data-testid="stTextInput"] input {
-        border-radius: 9px;
-        min-height: 45px;
-    }
+.total-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-    /* RESULT CARDS */
+.total-icon {
+    background: #294361;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 22px;
+}
 
-    .info-card {
-        background: white;
-        border: 1px solid #E4E8EE;
-        border-radius: 15px;
-        padding: 19px;
-        min-height: 145px;
-        margin-bottom: 12px;
-        box-shadow: 0 3px 12px rgba(20, 42, 70, 0.035);
-    }
+.total-label {
+    color: #D8E0EA;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
 
-    .card-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 23px;
-        font-weight: 700;
-        margin-bottom: 12px;
-    }
+.total-value {
+    color: #E7CC91;
+    font-size: 32px;
+    font-weight: 900;
+    margin-top: 15px;
+}
 
-    .icon-blue {
-        background: #E5EFFB;
-        color: #244D79;
-    }
+.total-note {
+    color: #C5D0DE;
+    font-size: 13px;
+    margin-top: 8px;
+}
 
-    .icon-purple {
-        background: #EEE8F7;
-        color: #70568F;
-    }
+div.stButton > button {
+    border-radius: 10px;
+    min-height: 45px;
+    font-weight: 700;
+}
 
-    .icon-green {
-        background: #E3F1E9;
-        color: #367C59;
-    }
+div.stButton > button[kind="primary"] {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+}
 
-    .icon-gold {
-        background: #F7EEDC;
-        color: #A17B3E;
-    }
+div.stButton > button[kind="primary"]:hover {
+    background: var(--navy2);
+    color: white;
+}
 
-    .info-label {
-        color: #7B8797;
-        font-size: 12px;
-        margin-bottom: 9px;
-    }
+div[data-testid="stTextInput"] input {
+    border-radius: 9px;
+}
 
-    .info-value {
-        color: var(--navy);
-        font-size: 21px;
-        font-weight: 800;
-    }
+.footer {
+    text-align: center;
+    color: #8993A1;
+    font-size: 12px;
+    padding: 30px 5px 15px;
+    line-height: 1.9;
+}
 
-    /* TOTAL PAYMENT */
-
-    .total-card {
-        background: var(--navy);
-        border-radius: 16px;
-        padding: 25px;
-        margin-top: 10px;
-        box-shadow: 0 6px 18px rgba(20, 42, 70, 0.12);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .total-label {
-        color: #D8E0EA;
-        font-size: 12px;
-        letter-spacing: 2px;
-        font-weight: 600;
-    }
-
-    .total-value {
-        color: #E7CC91;
-        font-size: 30px;
-        font-weight: 850;
-        margin-top: 10px;
-    }
-
-    .total-note {
-        color: #C5D0DE;
-        font-size: 12px;
-        margin-top: 9px;
-    }
-
-    .total-decoration {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        font-size: 48px;
-        color: rgba(231, 204, 145, 0.18);
-    }
-
-    /* BUTTONS */
-
-    div.stButton > button {
-        border-radius: 10px;
-        min-height: 45px;
-        font-weight: 650;
-        transition: 0.2s ease;
-    }
-
-    div.stButton > button[kind="primary"] {
-        background: var(--navy);
-        border-color: var(--navy);
-        color: white;
-    }
-
-    div.stButton > button[kind="primary"]:hover {
-        background: var(--navy-light);
-        border-color: var(--navy-light);
-        color: white;
-    }
-
-    /* EXPANDER */
-
-    [data-testid="stExpander"] {
-        border: 1px solid #DCE2EA;
-        border-radius: 11px;
-        background: white;
-        margin-top: 12px;
-    }
-
-    /* FOOTER */
-
-    .footer {
-        color: #8993A1;
-        text-align: center;
-        font-size: 11px;
-        padding: 25px 5px 10px;
-        line-height: 1.8;
-    }
-
-    @media (max-width: 600px) {
-        .main-heading {
-            font-size: 24px;
-        }
-
-        .info-value {
-            font-size: 18px;
-        }
-
-        .total-value {
-            font-size: 25px;
-        }
-
-        .brand-name {
-            font-size: 22px;
-        }
-
-        .info-card {
-            padding: 15px;
-            min-height: 135px;
-        }
-    }
+@media (max-width: 600px) {
+    .main-heading { font-size: 25px; }
+    .info-value { font-size: 18px; }
+    .total-value { font-size: 27px; }
+}
 </style>
 """, unsafe_allow_html=True)
 
 
 # =====================================================
-# FUNGSI BANTU
+# FUNGSI PERHITUNGAN
 # =====================================================
 
 def format_rupiah(nilai):
@@ -328,24 +252,20 @@ def hitung_laundry(nim, berat):
     )
 
     tarif = 5000 + (digit_terakhir * 500)
-
-    persen_diskon = jumlah_digit_genap
-
+    diskon = jumlah_digit_genap
     biaya_normal = berat_kg * tarif
-
-    potongan = biaya_normal * persen_diskon / 100
-
-    total_bayar = biaya_normal - potongan
+    potongan = biaya_normal * diskon / 100
+    total = biaya_normal - potongan
 
     return {
         "nim": nim,
         "berat": berat_kg,
         "tarif": tarif,
         "digit_genap": jumlah_digit_genap,
-        "diskon": persen_diskon,
+        "diskon": diskon,
         "normal": biaya_normal,
         "potongan": potongan,
-        "total": total_bayar
+        "total": total
     }
 
 
@@ -353,63 +273,33 @@ def hitung_laundry(nim, berat):
 # SESSION STATE
 # =====================================================
 
-if "nim" not in st.session_state:
-    st.session_state["nim"] = ""
-
-if "berat" not in st.session_state:
-    st.session_state["berat"] = ""
-
-if "hasil" not in st.session_state:
-    st.session_state["hasil"] = None
-
-if "error" not in st.session_state:
-    st.session_state["error"] = None
+for key, value in {
+    "nim": "",
+    "berat": "",
+    "hasil": None,
+    "error": None
+}.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
 
 
 # =====================================================
-# SIDEBAR / IDENTITAS APLIKASI
+# SIDEBAR / IDENTITAS LAVE
 # =====================================================
 
 with st.sidebar:
 
     st.markdown("""
     <div class="brand">
-        <div class="brand-symbol">
-    <svg width="76" height="76" viewBox="0 0 100 100"
-         fill="none" xmlns="http://www.w3.org/2000/svg">
-
-        <rect x="19" y="12" width="62" height="76"
-              rx="12" stroke="#C7A96B" stroke-width="3"/>
-
-        <path d="M20 31 H80"
-              stroke="#C7A96B" stroke-width="2"/>
-
-        <circle cx="31" cy="22" r="3"
-                fill="#C7A96B"/>
-
-        <circle cx="42" cy="22" r="3"
-                fill="#C7A96B"/>
-
-        <circle cx="50" cy="59" r="19"
-                stroke="white" stroke-width="3"/>
-
-        <circle cx="50" cy="59" r="13"
-                stroke="#C7A96B" stroke-width="2"/>
-
-        <path d="M42 58 Q50 48 58 58 Q64 66 55 69"
-              stroke="white" stroke-width="2"
-              stroke-linecap="round"/>
-
-    </svg>
-</div>
+        <div class="brand-symbol">〰</div>
         <div class="brand-name">LAVÉ</div>
         <div class="brand-subtitle">LAUNDRY STUDIO</div>
         <div class="brand-line"></div>
-        <div class="brand-description">
-            Smart Laundry Calculator<br>
-            Aplikasi Perhitungan<br>
-            Biaya Laundry Kiloan
-        </div>
+        <p style="color:#C5D0DE;line-height:1.9">
+        Smart Laundry Calculator<br>
+        Aplikasi Perhitungan<br>
+        Biaya Laundry Kiloan
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -427,23 +317,22 @@ with st.sidebar:
     st.markdown("""
     1. Masukkan NIM 10 digit.
     2. Masukkan berat cucian.
-    3. Tekan tombol Hitung.
-    4. Lihat rincian pembayaran.
+    3. Tekan Hitung Biaya.
+    4. Lihat hasil perhitungan.
     """)
 
     st.divider()
-
     st.caption("LAVÉ LAUNDRY STUDIO")
     st.caption("Clean. Simple. Reliable.")
 
 
 # =====================================================
-# HEADER UTAMA
+# HEADER
 # =====================================================
 
 st.markdown("""
 <div class="main-heading">
-    Laundry Cost Calculator
+    LAVÉ Laundry Calculator
 </div>
 <div class="main-subheading">
     Perhitungan biaya laundry kiloan yang praktis,
@@ -453,7 +342,7 @@ st.markdown("""
 
 
 # =====================================================
-# FORM INPUT
+# INPUT PELANGGAN
 # =====================================================
 
 st.markdown(
@@ -466,14 +355,12 @@ with st.container(border=True):
     nim = st.text_input(
         "Nomor Induk Mahasiswa (NIM)",
         placeholder="Masukkan 10 digit angka",
-        max_chars=20,
         key="nim"
     )
 
     berat = st.text_input(
         "Berat Cucian (kg)",
         placeholder="Masukkan berat dalam kilogram",
-        max_chars=20,
         key="berat"
     )
 
@@ -481,21 +368,21 @@ with st.container(border=True):
 
     with col_hitung:
         tombol_hitung = st.button(
-            "🧺 Hitung Biaya",
+            "✦  Hitung Biaya",
             type="primary",
             use_container_width=True
         )
 
     with col_reset:
         st.button(
-            "↻ Reset",
+            "↻  Reset",
             on_click=reset_data,
             use_container_width=True
         )
 
 
 # =====================================================
-# PROSES HITUNG
+# PROSES PERHITUNGAN
 # =====================================================
 
 if tombol_hitung:
@@ -514,7 +401,7 @@ if tombol_hitung:
 
 
 # =====================================================
-# PESAN VALIDASI
+# VALIDASI
 # =====================================================
 
 if st.session_state["error"]:
@@ -522,7 +409,7 @@ if st.session_state["error"]:
 
 
 # =====================================================
-# HASIL PERHITUNGAN
+# RINCIAN HASIL
 # =====================================================
 
 hasil = st.session_state["hasil"]
@@ -539,130 +426,60 @@ if hasil is not None:
 
     col1, col2 = st.columns(2)
 
-    with col1:
-        st.markdown(f"""
-        <div class="info-card">
-            <div class="card-icon icon-blue">◇</div>
-            <div class="info-label">Tarif per Kilogram</div>
-            <div class="info-value">
-                {format_rupiah(hasil['tarif'])}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+    cards = [
+        ("🏷️", "Tarif per Kilogram",
+         format_rupiah(hasil["tarif"])),
+        ("％", "Persentase Diskon",
+         str(hasil["diskon"]) + "%"),
+        ("🧺", "Biaya Normal",
+         format_rupiah(hasil["normal"])),
+        ("✧", "Potongan Harga",
+         format_rupiah(hasil["potongan"]))
+    ]
 
-    with col2:
-        st.markdown(f"""
-        <div class="info-card">
-            <div class="card-icon icon-purple">%</div>
-            <div class="info-label">Persentase Diskon</div>
-            <div class="info-value">
-                {hasil['diskon']}%
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+    for index, (icon, label, value) in enumerate(cards):
 
-    col3, col4 = st.columns(2)
+        column = col1 if index % 2 == 0 else col2
 
-    with col3:
-        st.markdown(f"""
-        <div class="info-card">
-            <div class="card-icon icon-green">▤</div>
-            <div class="info-label">Biaya Normal</div>
-            <div class="info-value">
-                {format_rupiah(hasil['normal'])}
+        with column:
+            st.markdown(f"""
+            <div class="info-card">
+                <div class="info-top">
+                    <div class="info-icon">{icon}</div>
+                    <div class="info-label">{label}</div>
+                </div>
+                <div class="info-value">{value}</div>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col4:
-        st.markdown(f"""
-        <div class="info-card">
-            <div class="card-icon icon-gold">−</div>
-            <div class="info-label">Potongan Harga</div>
-            <div class="info-value">
-                {format_rupiah(hasil['potongan'])}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
     st.markdown(f"""
     <div class="total-card">
-        <div class="total-decoration">✦</div>
-        <div class="total-label">
-            TOTAL PEMBAYARAN
+        <div class="total-top">
+            <div class="total-icon">🧾</div>
+            <div class="total-label">
+                TOTAL PEMBAYARAN
+            </div>
         </div>
         <div class="total-value">
-            {format_rupiah(hasil['total'])}
+            {format_rupiah(hasil["total"])}
         </div>
         <div class="total-note">
-            Berat {hasil['berat']} kg
+            Berat {hasil["berat"]} kg
             &nbsp; | &nbsp;
-            Diskon {hasil['diskon']}%
+            Diskon {hasil["diskon"]}%
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    with st.expander("⌄ Lihat Detail Data Pelanggan"):
+    with st.expander("Lihat Detail Data Pelanggan"):
 
-        st.markdown(f"""
-
-        <div class="detail-row">
-
-            <span>NIM</span>
-
-            <strong>{hasil['nim']}</strong>
-
-        </div>
-
-        <div class="detail-row">
-
-            <span>Berat Cucian</span>
-
-            <strong>{hasil['berat']} kg</strong>
-
-        </div>
-
-        <div class="detail-row">
-
-            <span>Jumlah Digit Genap</span>
-
-            <strong>{hasil['digit_genap']}</strong>
-
-        </div>
-
-        <div class="detail-row">
-
-            <span>Tarif per kg</span>
-
-            <strong>{format_rupiah(hasil['tarif'])}</strong>
-
-        </div>
-
-        <div class="detail-row">
-
-            <span>Biaya Normal</span>
-
-            <strong>{format_rupiah(hasil['normal'])}</strong>
-
-        </div>
-
-        <div class="detail-row">
-
-            <span>Potongan Harga</span>
-
-            <strong>{format_rupiah(hasil['potongan'])}</strong>
-
-        </div>
-
-        <div class="detail-row detail-total">
-
-            <span>Total Bayar</span>
-
-            <strong>{format_rupiah(hasil['total'])}</strong>
-
-        </div>
-
-        """, unsafe_allow_html=True)
+        st.write("**NIM:**", hasil["nim"])
+        st.write("**Berat Cucian:**", hasil["berat"], "kg")
+        st.write("**Jumlah Digit Genap:**", hasil["digit_genap"])
+        st.write("**Tarif per kg:**", format_rupiah(hasil["tarif"]))
+        st.write("**Biaya Normal:**", format_rupiah(hasil["normal"]))
+        st.write("**Potongan:**", format_rupiah(hasil["potongan"]))
+        st.write("**Total Bayar:**", format_rupiah(hasil["total"]))
 
 
 # =====================================================
