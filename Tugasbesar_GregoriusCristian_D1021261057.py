@@ -374,7 +374,34 @@ with st.sidebar:
 
     st.markdown("""
     <div class="brand">
-        <div class="brand-symbol">〰</div>
+        <div class="brand-symbol">
+    <svg width="76" height="76" viewBox="0 0 100 100"
+         fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <rect x="19" y="12" width="62" height="76"
+              rx="12" stroke="#C7A96B" stroke-width="3"/>
+
+        <path d="M20 31 H80"
+              stroke="#C7A96B" stroke-width="2"/>
+
+        <circle cx="31" cy="22" r="3"
+                fill="#C7A96B"/>
+
+        <circle cx="42" cy="22" r="3"
+                fill="#C7A96B"/>
+
+        <circle cx="50" cy="59" r="19"
+                stroke="white" stroke-width="3"/>
+
+        <circle cx="50" cy="59" r="13"
+                stroke="#C7A96B" stroke-width="2"/>
+
+        <path d="M42 58 Q50 48 58 58 Q64 66 55 69"
+              stroke="white" stroke-width="2"
+              stroke-linecap="round"/>
+
+    </svg>
+</div>
         <div class="brand-name">LAVÉ</div>
         <div class="brand-subtitle">LAUNDRY STUDIO</div>
         <div class="brand-line"></div>
@@ -577,28 +604,65 @@ if hasil is not None:
 
     with st.expander("⌄ Lihat Detail Data Pelanggan"):
 
-        st.write("**NIM:**", hasil["nim"])
-        st.write("**Berat Cucian:**", hasil["berat"], "kg")
-        st.write(
-            "**Jumlah Digit Genap:**",
-            hasil["digit_genap"]
-        )
-        st.write(
-            "**Tarif per kg:**",
-            format_rupiah(hasil["tarif"])
-        )
-        st.write(
-            "**Biaya Normal:**",
-            format_rupiah(hasil["normal"])
-        )
-        st.write(
-            "**Potongan:**",
-            format_rupiah(hasil["potongan"])
-        )
-        st.write(
-            "**Total Bayar:**",
-            format_rupiah(hasil["total"])
-        )
+        st.markdown(f"""
+
+        <div class="detail-row">
+
+            <span>NIM</span>
+
+            <strong>{hasil['nim']}</strong>
+
+        </div>
+
+        <div class="detail-row">
+
+            <span>Berat Cucian</span>
+
+            <strong>{hasil['berat']} kg</strong>
+
+        </div>
+
+        <div class="detail-row">
+
+            <span>Jumlah Digit Genap</span>
+
+            <strong>{hasil['digit_genap']}</strong>
+
+        </div>
+
+        <div class="detail-row">
+
+            <span>Tarif per kg</span>
+
+            <strong>{format_rupiah(hasil['tarif'])}</strong>
+
+        </div>
+
+        <div class="detail-row">
+
+            <span>Biaya Normal</span>
+
+            <strong>{format_rupiah(hasil['normal'])}</strong>
+
+        </div>
+
+        <div class="detail-row">
+
+            <span>Potongan Harga</span>
+
+            <strong>{format_rupiah(hasil['potongan'])}</strong>
+
+        </div>
+
+        <div class="detail-row detail-total">
+
+            <span>Total Bayar</span>
+
+            <strong>{format_rupiah(hasil['total'])}</strong>
+
+        </div>
+
+        """, unsafe_allow_html=True)
 
 
 # =====================================================
